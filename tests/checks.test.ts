@@ -133,3 +133,11 @@ test("evidence prompt fits Groq's 8,000 tokens/minute free tier even for a huge 
   assert.ok(promptTokens + MAX_COMPLETION_TOKENS < 8000, `estimated ${Math.round(promptTokens + MAX_COMPLETION_TOKENS)} tokens`);
   assert.ok(user.includes("--- FILE package.json ---"));
 });
+
+test("database connection errors are recognised for a single retry", async () => {
+  const { isConnectionError } = await import("../lib/db/index");
+  assert.equal(isConnectionError(new Error("Connection terminated unexpectedly")), true);
+  assert.equal(isConnectionError({ message: "Failed query: insert ...", cause: new Error("Connection terminated due to connection timeout") }), true);
+  assert.equal(isConnectionError({ message: "x", code: "ECONNRESET" }), true);
+  assert.equal(isConnectionError(new Error('duplicate key value violates unique constraint "teams_name_unique"')), false);
+});

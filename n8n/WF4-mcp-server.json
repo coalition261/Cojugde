@@ -14,7 +14,7 @@
     {
       "parameters": {
         "toolDescription": "get_team_report: Get one team's verification checks, flags and human score average (never AI estimates). Input: the exact team name.",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/get_team_report",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/mcp/get_team_report",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendQuery": true,
@@ -31,7 +31,7 @@
     {
       "parameters": {
         "toolDescription": "list_open_flags: List every rule flag still awaiting an organizer decision, with team, kind and detail.",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/list_open_flags",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/mcp/list_open_flags",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "optimizeResponse": false
@@ -46,7 +46,7 @@
     {
       "parameters": {
         "toolDescription": "get_leaderboard: Leaderboard from human judge scores only (average, number of judges, shortlist, flags).",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/get_leaderboard",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/mcp/get_leaderboard",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "optimizeResponse": false
@@ -61,7 +61,7 @@
     {
       "parameters": {
         "toolDescription": "compare_teams: Side-by-side reports for two teams. Inputs: a and b, exact team names.",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/compare_teams",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/mcp/compare_teams",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendQuery": true,

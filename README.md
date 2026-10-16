@@ -26,9 +26,27 @@ CoJudge verifies each submission in seconds, emails teams when something breaks,
 | Feedback drafts + approval | F11 / WF6 | ❌ Not built (first item on the PRD cut list) |
 | PDF upload with link extraction | F1 (P1) | ❌ Not built |
 
-**Verified:** `npm run typecheck` ✅ · `npm test` (9 unit tests) ✅ · `npm run build` ✅ · home, submit pages rendered in a browser (desktop + 375 px mobile) ✅
+**Verified:** `npm run typecheck` ✅ · `npm test` (10 unit tests) ✅ · home, submit pages rendered in a browser (desktop + 375 px mobile) ✅ · Groq evidence run on a real repo (8 s) ✅
 **Verified locally on embedded Postgres (PGlite):** migrations, report page, organizer login, dashboard + flag queue, estimate withheld by `GET /api/teams/[id]` before scoring, score → reveal → second-look reason, human-only leaderboard, live submission against a real public GitHub repo (pre-flight 2.3 s), internal MCP endpoint (403 without key).
-**Not verified yet (needs your credentials/infrastructure):** YouTube/Groq calls, n8n workflow import, Discord buttons, SMTP delivery, Alternate Clouds deploy.
+**Verified live on Alternate Clouds (17 Oct):** image built from `main` on the platform, `/api/health` 200, home/submit/login 200, judge login + dashboard reading the hosted Postgres ✅
+**Not verified yet:** n8n credentials + activation (needs your Gmail app password, Discord bot token and the two shared keys), email delivery, Discord buttons, YouTube API (no key set), a real team submission on the live site.
+
+### Live deployment
+
+| Piece | Where | Notes |
+|---|---|---|
+| App | https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai | Alternate Clouds project **cojudge**, service **cojudge** (`cmvbf2wop0f1je41rzwkbyykr`), built from `coalition261/Cojugde@main`, port 3000. The URL keeps the service's original slug; renaming the service doesn't change it. |
+| Database | Alternate Clouds service **postgresql-ls57** (`cmvbdls230a2ye41r1prr7c4r`), DB `appdb` | The app reaches it through the public forwarded port (`provider.zencloud.eu:<port>`), because `*.cojudge.internal` only resolves when both services land on the same provider. **If Postgres is redeployed the port changes** — update `DATABASE_URL` on the app and redeploy. |
+| n8n | https://ayaan261.app.n8n.cloud (n8n Cloud trial) | WF1–WF5 imported and pointed at the live app URL. Not active until credentials are attached. |
+| Variables | `.env.production.local` (git-ignored, on the build laptop only) | Every value set on the app service; set with `acc services env set …`. |
+
+Redeploy after a push or a variable change (the CLI is logged in as coalition261):
+
+```bash
+acc services deploy -p cojudge cmvbf2wop0f1je41rzwkbyykr --spend payg -y
+```
+
+The platform's deploy occasionally fails with `Akash tx rejected (code 32)` or an `akash … nil pointer` panic — those are Alternate Clouds infrastructure errors; simply run the deploy again.
 
 ---
 

@@ -61,7 +61,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/notifications",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
@@ -82,7 +82,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/notifications",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,

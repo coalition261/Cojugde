@@ -41,7 +41,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://cojudge-app.alternatefutures.ai/api/internal/flag-decision",
+        "url": "https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai/api/internal/flag-decision",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,

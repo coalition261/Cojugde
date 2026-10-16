@@ -1,0 +1,136 @@
+{
+  "name": "WF2 Uptime watch",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "minutes", "minutesInterval": 10 }] } },
+      "id": "b1b2c3d4-0002-4000-8000-000000000001",
+      "name": "Every 10 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/uptime-sweep",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": { "timeout": 60000 }
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000002",
+      "name": "POST uptime-sweep",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": { "fieldToSplitOut": "changes", "options": {} },
+      "id": "b1b2c3d4-0002-4000-8000-000000000003",
+      "name": "Split Out changes",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": { "type": "object", "operation": "notEmpty", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000004",
+      "name": "IF email allowed (cap)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "fromEmail": "CoJudge <your-gmail@gmail.com>",
+        "toEmail": "={{ $json.email.to }}",
+        "subject": "={{ $json.email.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.email.text }}",
+        "options": { "appendAttribution": false }
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000005",
+      "name": "Send down/recovered email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [880, -20],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "smtp": { "id": "", "name": "Gmail SMTP" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ notificationId: $('IF email allowed (cap)').item.json.email.notificationId, status: 'sent' }) }}",
+        "options": {}
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000006",
+      "name": "Log sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, -100],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ notificationId: $('IF email allowed (cap)').item.json.email.notificationId, status: 'failed' }) }}",
+        "options": {}
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000007",
+      "name": "Log failed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 100],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    }
+  ],
+  "connections": {
+    "Every 10 minutes": { "main": [[{ "node": "POST uptime-sweep", "type": "main", "index": 0 }]] },
+    "POST uptime-sweep": { "main": [[{ "node": "Split Out changes", "type": "main", "index": 0 }], []] },
+    "Split Out changes": { "main": [[{ "node": "IF email allowed (cap)", "type": "main", "index": 0 }]] },
+    "IF email allowed (cap)": { "main": [[{ "node": "Send down/recovered email", "type": "main", "index": 0 }], []] },
+    "Send down/recovered email": {
+      "main": [
+        [{ "node": "Log sent", "type": "main", "index": 0 }],
+        [{ "node": "Log failed", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Karachi" },
+  "active": false
+}

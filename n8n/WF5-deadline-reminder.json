@@ -1,0 +1,87 @@
+{
+  "name": "WF5 Deadline reminder",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 45 11 17 10 *" }] } },
+      "id": "e1b2c3d4-0005-4000-8000-000000000001",
+      "name": "17 Oct 11:45 AM PKT",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/deadline-reminder",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "e1b2c3d4-0005-4000-8000-000000000002",
+      "name": "Fetch teams with open failed checks",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": { "fieldToSplitOut": "emails", "options": {} },
+      "id": "e1b2c3d4-0005-4000-8000-000000000003",
+      "name": "Split Out emails",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "fromEmail": "CoJudge <your-gmail@gmail.com>",
+        "toEmail": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.text }}",
+        "options": { "appendAttribution": false }
+      },
+      "id": "e1b2c3d4-0005-4000-8000-000000000004",
+      "name": "Send reminder",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [660, 0],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "smtp": { "id": "", "name": "Gmail SMTP" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ notificationId: $('Split Out emails').item.json.notificationId, status: 'sent' }) }}",
+        "options": {}
+      },
+      "id": "e1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Log sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    }
+  ],
+  "connections": {
+    "17 Oct 11:45 AM PKT": { "main": [[{ "node": "Fetch teams with open failed checks", "type": "main", "index": 0 }]] },
+    "Fetch teams with open failed checks": { "main": [[{ "node": "Split Out emails", "type": "main", "index": 0 }], []] },
+    "Split Out emails": { "main": [[{ "node": "Send reminder", "type": "main", "index": 0 }]] },
+    "Send reminder": { "main": [[{ "node": "Log sent", "type": "main", "index": 0 }], []] }
+  },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Karachi" },
+  "active": false
+}

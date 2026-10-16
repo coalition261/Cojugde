@@ -1,0 +1,92 @@
+{
+  "name": "WF4 MCP server",
+  "nodes": [
+    {
+      "parameters": { "authentication": "bearerAuth", "path": "cojudge" },
+      "id": "d1b2c3d4-0004-4000-8000-000000000001",
+      "name": "MCP Server Trigger",
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [400, 0],
+      "webhookId": "cojudge-mcp",
+      "credentials": { "httpBearerAuth": { "id": "", "name": "CoJudge MCP Bearer" } }
+    },
+    {
+      "parameters": {
+        "toolDescription": "get_team_report: Get one team's verification checks, flags and human score average (never AI estimates). Input: the exact team name.",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/get_team_report",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "parametersQuery": { "values": [{ "name": "team", "valueProvider": "modelRequired", "description": "Exact team name as submitted" }] },
+        "optimizeResponse": false
+      },
+      "id": "d1b2c3d4-0004-4000-8000-000000000002",
+      "name": "get_team_report",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [0, 220],
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": {
+        "toolDescription": "list_open_flags: List every rule flag still awaiting an organizer decision, with team, kind and detail.",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/list_open_flags",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "optimizeResponse": false
+      },
+      "id": "d1b2c3d4-0004-4000-8000-000000000003",
+      "name": "list_open_flags",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [260, 220],
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": {
+        "toolDescription": "get_leaderboard: Leaderboard from human judge scores only (average, number of judges, shortlist, flags).",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/get_leaderboard",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "optimizeResponse": false
+      },
+      "id": "d1b2c3d4-0004-4000-8000-000000000004",
+      "name": "get_leaderboard",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [520, 220],
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": {
+        "toolDescription": "compare_teams: Side-by-side reports for two teams. Inputs: a and b, exact team names.",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/mcp/compare_teams",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "parametersQuery": {
+          "values": [
+            { "name": "a", "valueProvider": "modelRequired", "description": "First team name" },
+            { "name": "b", "valueProvider": "modelRequired", "description": "Second team name" }
+          ]
+        },
+        "optimizeResponse": false
+      },
+      "id": "d1b2c3d4-0004-4000-8000-000000000005",
+      "name": "compare_teams",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [780, 220],
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    }
+  ],
+  "connections": {
+    "get_team_report": { "ai_tool": [[{ "node": "MCP Server Trigger", "type": "ai_tool", "index": 0 }]] },
+    "list_open_flags": { "ai_tool": [[{ "node": "MCP Server Trigger", "type": "ai_tool", "index": 0 }]] },
+    "get_leaderboard": { "ai_tool": [[{ "node": "MCP Server Trigger", "type": "ai_tool", "index": 0 }]] },
+    "compare_teams": { "ai_tool": [[{ "node": "MCP Server Trigger", "type": "ai_tool", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Karachi" },
+  "active": false
+}

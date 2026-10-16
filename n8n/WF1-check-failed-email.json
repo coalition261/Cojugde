@@ -1,0 +1,116 @@
+{
+  "name": "WF1 Check-failed email",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cojudge-check-failed",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Webhook (Header Auth)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "cojudge-check-failed",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Webhook Key" } }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.body.to }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000002",
+      "name": "IF any check failed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "fromEmail": "CoJudge <your-gmail@gmail.com>",
+        "toEmail": "={{ $json.body.to }}",
+        "subject": "={{ $json.body.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.body.text }}",
+        "options": { "appendAttribution": false }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000003",
+      "name": "Send Email (SMTP)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [460, -20],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "smtp": { "id": "", "name": "Gmail SMTP" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ notificationId: $('Webhook (Header Auth)').item.json.body.notificationId, status: 'sent' }) }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000004",
+      "name": "Log sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, -100],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/notifications",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ notificationId: $('Webhook (Header Auth)').item.json.body.notificationId, status: 'failed' }) }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000005",
+      "name": "Log failed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 100],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    }
+  ],
+  "connections": {
+    "Webhook (Header Auth)": { "main": [[{ "node": "IF any check failed", "type": "main", "index": 0 }]] },
+    "IF any check failed": { "main": [[{ "node": "Send Email (SMTP)", "type": "main", "index": 0 }], []] },
+    "Send Email (SMTP)": {
+      "main": [
+        [{ "node": "Log sent", "type": "main", "index": 0 }],
+        [{ "node": "Log failed", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Karachi" },
+  "active": false
+}

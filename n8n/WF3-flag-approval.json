@@ -1,0 +1,69 @@
+{
+  "name": "WF3 Flag approval (Discord)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cojudge-flag-opened",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "c1b2c3d4-0003-4000-8000-000000000001",
+      "name": "Webhook (Header Auth)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "cojudge-flag-opened",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Webhook Key" } }
+    },
+    {
+      "parameters": {
+        "authentication": "botToken",
+        "resource": "message",
+        "operation": "sendAndWait",
+        "guildId": { "__rl": true, "mode": "id", "value": "YOUR_DISCORD_SERVER_ID" },
+        "channelId": { "__rl": true, "mode": "id", "value": "YOUR_PRIVATE_ORGANIZERS_CHANNEL_ID" },
+        "message": "=🚩 **CoJudge flag #{{ $json.body.flagId }}** — {{ $json.body.team }}\n**Kind:** `{{ $json.body.kind }}`\n**Detail:** {{ $json.body.detail }}\n\nOnly a confirmed flag counts against the team. Dashboard: {{ $json.body.dashboardUrl }}",
+        "approvalOptions": {
+          "values": { "approvalType": "double", "approveLabel": "Confirm", "disapproveLabel": "Dismiss" }
+        },
+        "options": {}
+      },
+      "id": "c1b2c3d4-0003-4000-8000-000000000002",
+      "name": "Discord: Send and Wait (Confirm / Dismiss)",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [240, 0],
+      "webhookId": "cojudge-flag-approval",
+      "credentials": { "discordBotApi": { "id": "", "name": "CoJudge Discord Bot" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cojudge-app.alternatefutures.ai/api/internal/flag-decision",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ flagId: $('Webhook (Header Auth)').item.json.body.flagId, decision: $json.data.approved ? 'confirm' : 'dismiss', decidedBy: 'discord:#organizers' }) }}",
+        "options": {}
+      },
+      "id": "c1b2c3d4-0003-4000-8000-000000000003",
+      "name": "POST flag-decision",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 0],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+    }
+  ],
+  "connections": {
+    "Webhook (Header Auth)": { "main": [[{ "node": "Discord: Send and Wait (Confirm / Dismiss)", "type": "main", "index": 0 }]] },
+    "Discord: Send and Wait (Confirm / Dismiss)": { "main": [[{ "node": "POST flag-decision", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Karachi" },
+  "active": false
+}

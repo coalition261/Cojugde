@@ -28,15 +28,15 @@ CoJudge verifies each submission in seconds, emails teams when something breaks,
 
 **Verified:** `npm run typecheck` ✅ · `npm test` (10 unit tests) ✅ · home, submit pages rendered in a browser (desktop + 375 px mobile) ✅ · Groq evidence run on a real repo (8 s) ✅
 **Verified locally on embedded Postgres (PGlite):** migrations, report page, organizer login, dashboard + flag queue, estimate withheld by `GET /api/teams/[id]` before scoring, score → reveal → second-look reason, human-only leaderboard, live submission against a real public GitHub repo (pre-flight 2.3 s), internal MCP endpoint (403 without key).
-**Verified live on Alternate Clouds (17 Oct):** image built from `main` on the platform, `/api/health` 200, home/submit/login 200, judge login + dashboard reading the hosted Postgres ✅
-**Not verified yet:** n8n credentials + activation (needs your Gmail app password, Discord bot token and the two shared keys), email delivery, Discord buttons, YouTube API (no key set), a real team submission on the live site.
+**Verified live on Alternate Clouds (17 Oct):** image built from `main` on the platform, `/api/health` 200, home/submit/login 200, judge login + dashboard, and a real submission end to end (pre-flight 9 s, cached resubmit 5 s) on the Supabase database ✅
+**Not verified yet:** n8n credentials + activation (needs your Gmail app password, Discord bot token and the two shared keys), email delivery, Discord buttons, YouTube API (no key set), email/Discord alerts from a live submission.
 
 ### Live deployment
 
 | Piece | Where | Notes |
 |---|---|---|
 | App | https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai | Alternate Clouds project **cojudge**, service **cojudge** (`cmvbf2wop0f1je41rzwkbyykr`), built from `coalition261/Cojugde@main`, port 3000. The URL keeps the service's original slug; renaming the service doesn't change it. |
-| Database | Alternate Clouds service **postgresql-ls57** (`cmvbdls230a2ye41r1prr7c4r`), DB `appdb` | The app reaches it through the public forwarded port (`provider.zencloud.eu:<port>`), because `*.cojudge.internal` only resolves when both services land on the same provider. **If Postgres is redeployed the port changes** — update `DATABASE_URL` on the app and redeploy. |
+| Database | **Supabase** Postgres 17, project `dirmdqhjvqndoooppfeu` (Sydney), via the IPv4 **session pooler** `aws-0-ap-southeast-2.pooler.supabase.com:5432` with SSL (`DATABASE_SSL=true`, `DATABASE_POOL_MAX=5`) | Moved here from the Alternate Clouds Postgres template, which the app could only reach through a flaky forwarded port (connection timeouts on submit). The old `postgresql-ls57` service is closed. Direct Supabase connections are IPv6-only, so use the pooler. |
 | n8n | https://ayaan261.app.n8n.cloud (n8n Cloud trial) | WF1–WF5 imported and pointed at the live app URL. Not active until credentials are attached. |
 | Variables | `.env.production.local` (git-ignored, on the build laptop only) | Every value set on the app service; set with `acc services env set …`. |
 

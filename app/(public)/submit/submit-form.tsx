@@ -65,7 +65,7 @@ export function SubmitForm() {
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="flex items-start gap-3 rounded-xl border border-danger/30 bg-danger/10 p-4 text-sm text-danger"
+              className="flex items-start gap-3 rounded-xl border border-danger/30 bg-danger/10 p-4 text-sm text-danger-ink"
             >
               <CircleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
               {formError}
@@ -78,7 +78,7 @@ export function SubmitForm() {
             <div key={f.name} className={f.name === "teamName" || f.name === "contactEmail" ? "" : "sm:col-span-2"}>
               <Label htmlFor={f.name}>
                 {f.label}
-                {f.required && <span className="text-danger" aria-hidden> *</span>}
+                {f.required && <span className="text-danger-ink" aria-hidden> *</span>}
               </Label>
               <Input
                 id={f.name}
@@ -91,7 +91,7 @@ export function SubmitForm() {
                 aria-describedby={`${f.name}-help`}
                 className="mt-2"
               />
-              <p id={`${f.name}-help`} className={errors[f.name] ? "mt-1.5 text-sm text-danger" : "mt-1.5 text-sm text-fg-subtle"}>
+              <p id={`${f.name}-help`} className={errors[f.name] ? "mt-1.5 text-sm text-danger-ink" : "mt-1.5 text-sm text-fg-subtle"}>
                 {errors[f.name] ?? f.help}
               </p>
             </div>

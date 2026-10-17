@@ -59,7 +59,7 @@ export function FlagActions({ flagId }: { flagId: number }) {
           </>
         )}
       </div>
-      {error && <p role="alert" className="text-xs text-danger">{error}</p>}
+      {error && <p role="alert" className="text-xs text-danger-ink">{error}</p>}
     </div>
   );
 }
@@ -72,7 +72,7 @@ export function RunEvidenceButton({ teamId, hasEvidence }: { teamId: number; has
         {busy ? <LoaderCircle className="animate-spin" /> : <Bot />}
         {busy ? "Drafting evidence…" : hasEvidence ? "Re-run AI evidence" : "Run AI evidence"}
       </Button>
-      {error && <p role="alert" className="text-xs text-danger">{error}</p>}
+      {error && <p role="alert" className="text-xs text-danger-ink">{error}</p>}
     </div>
   );
 }
@@ -92,7 +92,7 @@ export function VerifyToggle({ checkId, verified, by }: { checkId: number; verif
         {busy ? <LoaderCircle className="animate-spin" /> : verified ? <Check /> : null}
         {verified ? "Verified" : "Tick off"}
       </Button>
-      {error && <span role="alert" className="text-xs text-danger">{error}</span>}
+      {error && <span role="alert" className="text-xs text-danger-ink">{error}</span>}
     </span>
   );
 }
@@ -112,7 +112,7 @@ export function ShortlistToggle({ teamId, shortlisted, disabled }: { teamId: num
         {shortlisted ? "Shortlisted" : "Shortlist"}
         {shortlisted && <X className="opacity-60" aria-label="remove" />}
       </Button>
-      {error && <span role="alert" className="text-xs text-danger">{error}</span>}
+      {error && <span role="alert" className="text-xs text-danger-ink">{error}</span>}
     </span>
   );
 }

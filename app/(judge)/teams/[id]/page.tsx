@@ -59,7 +59,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
             {t.flags.length > 0 && (
               <Card className="overflow-hidden">
                 <h2 className="flex items-center gap-2 border-b border-glass-border px-6 py-4 font-semibold">
-                  <Flag className="size-4 text-warning" aria-hidden /> Flags
+                  <Flag className="size-4 text-warning-ink" aria-hidden /> Flags
                 </h2>
                 <ul className="divide-y divide-glass-border">
                   {t.flags.map((f) => (
@@ -94,7 +94,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
             <Card className="overflow-hidden">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-glass-border px-6 py-4">
                 <h2 className="flex items-center gap-2 font-semibold">
-                  <Bot className="size-4 text-accent" aria-hidden /> AI evidence
+                  <Bot className="size-4 text-accent-ink" aria-hidden /> AI evidence
                 </h2>
                 {session.role === "organizer" && <RunEvidenceButton teamId={t.team.id} hasEvidence={!!t.evidence} />}
               </div>
@@ -109,7 +109,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
                   </p>
                   {t.evidence.redFlags.length > 0 && (
                     <div className="rounded-xl border border-danger/30 bg-danger/[0.07] p-4 text-sm">
-                      <p className="flex items-center gap-2 font-medium text-danger">
+                      <p className="flex items-center gap-2 font-medium text-danger-ink">
                         <TriangleAlert className="size-4" aria-hidden /> Text addressed to AI or judges
                       </p>
                       <ul className="mt-2 list-disc space-y-1 pl-5 text-fg-muted">
@@ -135,7 +135,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
                                     href={`${repoBase}/blob/HEAD/${e.file}${e.line ? `#L${e.line}` : ""}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="ml-2 inline-flex items-center gap-1 rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-accent hover:underline"
+                                    className="ml-2 inline-flex items-center gap-1 rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-accent-ink hover:underline"
                                   >
                                     <FileCode className="size-3" aria-hidden />
                                     {e.file}
@@ -148,14 +148,14 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
                           {!ce?.evidence.length && <li className="text-sm text-fg-subtle">No cited evidence.</li>}
                         </ul>
                         {!!ce?.risks.length && (
-                          <p className="mt-2 text-xs text-warning">Risks: {ce.risks.join(" · ")}</p>
+                          <p className="mt-2 text-xs text-warning-ink">Risks: {ce.risks.join(" · ")}</p>
                         )}
                       </section>
                     );
                   })}
-                  <section className="rounded-xl bg-white/[0.03] p-4">
+                  <section className="rounded-xl bg-slate-50 p-4">
                     <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                      <MessageCircleQuestionMark className="size-4 text-accent" aria-hidden /> Ask during the demo
+                      <MessageCircleQuestionMark className="size-4 text-accent-ink" aria-hidden /> Ask during the demo
                     </h3>
                     <ol className="list-decimal space-y-1.5 pl-5 text-sm text-fg-muted">
                       {t.evidence.questions.map((q, i) => <li key={i}>{q}</li>)}

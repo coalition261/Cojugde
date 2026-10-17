@@ -7,7 +7,7 @@ export default function SubmitPage() {
   return (
     <>
       <header className="mb-8">
-        <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-accent">Pre-flight</p>
+        <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-accent-ink">Pre-flight</p>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Submit your project</h1>
         <p className="mt-3 text-fg-muted">
           We check your deployment, repo, code freeze, secrets and video in under 30 seconds. If anything is broken you&apos;ll get a

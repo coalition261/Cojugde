@@ -28,7 +28,7 @@ export function JudgeNav({ name, role }: { name: string; role: "judge" | "organi
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors duration-200",
-                    active ? "bg-white/[0.07] text-fg" : "text-fg-muted hover:text-fg",
+                    active ? "bg-slate-100 text-fg" : "text-fg-muted hover:text-fg",
                   )}
                 >
                   <l.icon className="size-4" aria-hidden />
@@ -44,7 +44,7 @@ export function JudgeNav({ name, role }: { name: string; role: "judge" | "organi
             <p className="text-xs capitalize text-fg-subtle">{role}</p>
           </div>
           <form action="/api/auth/logout" method="post">
-            <button type="submit" aria-label="Sign out" className="flex size-10 cursor-pointer items-center justify-center rounded-lg text-fg-muted transition-colors hover:bg-danger/10 hover:text-danger">
+            <button type="submit" aria-label="Sign out" className="flex size-10 cursor-pointer items-center justify-center rounded-lg text-fg-muted transition-colors hover:bg-danger/10 hover:text-danger-ink">
               <LogOut className="size-4" aria-hidden />
             </button>
           </form>

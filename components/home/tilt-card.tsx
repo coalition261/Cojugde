@@ -12,7 +12,7 @@ export function TiltCard({ className, children }: { className?: string; children
   const y = useMotionValue(0.5);
   const rx = useSpring(useTransform(y, [0, 1], [7, -7]), { stiffness: 220, damping: 22 });
   const ry = useSpring(useTransform(x, [0, 1], [-9, 9]), { stiffness: 220, damping: 22 });
-  const glare = useTransform([x, y], ([gx, gy]) => `radial-gradient(420px circle at ${Number(gx) * 100}% ${Number(gy) * 100}%, rgba(110,149,224,0.12), transparent 45%)`);
+  const glare = useTransform([x, y], ([gx, gy]) => `radial-gradient(420px circle at ${Number(gx) * 100}% ${Number(gy) * 100}%, rgba(30,64,175,0.06), transparent 45%)`);
 
   return (
     <motion.div

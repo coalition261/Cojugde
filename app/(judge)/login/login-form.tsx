@@ -51,7 +51,7 @@ export function LoginForm({ next, initialError }: { next: string; initialError?:
           </button>
         </div>
         <p id="passcode-help" className="mt-2 text-sm text-fg-subtle">The shared judge or organizer passcode from the event organizers — not your email or Google password.</p>
-        <p id="login-error" role="alert" className="mt-2 min-h-5 text-sm text-danger">
+        <p id="login-error" role="alert" className="mt-2 min-h-5 text-sm text-danger-ink">
           {error}
         </p>
       </div>

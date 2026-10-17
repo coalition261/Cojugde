@@ -37,7 +37,7 @@ export default async function DashboardPage() {
         </div>
         <div className="flex gap-3">
           <Stat icon={Users} label="Scored by you" value={`${scored}/${teams.length}`} />
-          <Stat icon={Flag} label="Open flags" value={String(flags.length)} tone={flags.length ? "text-warning" : undefined} />
+          <Stat icon={Flag} label="Open flags" value={String(flags.length)} tone={flags.length ? "text-warning-ink" : undefined} />
         </div>
       </header>
 
@@ -45,7 +45,7 @@ export default async function DashboardPage() {
         <Card className="mb-8 overflow-hidden">
           <div className="flex items-center justify-between border-b border-glass-border px-6 py-4">
             <h2 className="flex items-center gap-2 font-semibold">
-              <Flag className="size-4 text-warning" aria-hidden /> Flags awaiting your decision
+              <Flag className="size-4 text-warning-ink" aria-hidden /> Flags awaiting your decision
             </h2>
             <span className="text-xs text-fg-subtle">Also posted to #organizers on Discord</span>
           </div>
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
                 <div className="min-w-0">
                   <p className="font-medium">
                     <Link href={`/teams/${teamId}`} className="hover:underline">{team}</Link>
-                    <span className="ml-2 rounded-md bg-white/5 px-2 py-0.5 font-mono text-xs text-fg-muted">{flag.kind}</span>
+                    <span className="ml-2 rounded-md bg-slate-100 px-2 py-0.5 font-mono text-xs text-fg-muted">{flag.kind}</span>
                   </p>
                   <p className="mt-1 break-words text-sm text-fg-muted">{flag.detail}</p>
                   <p className="mt-1 text-xs text-fg-subtle">Opened {formatPkt(flag.createdAt)}</p>
@@ -88,29 +88,29 @@ export default async function DashboardPage() {
               <li key={t.id}>
                 <Link
                   href={`/teams/${t.id}`}
-                  className="grid cursor-pointer gap-3 px-6 py-4 transition-colors duration-200 hover:bg-white/[0.03] md:grid-cols-[1.6fr_1fr_1.4fr_0.8fr_0.9fr_24px] md:items-center md:gap-4"
+                  className="grid cursor-pointer gap-3 px-6 py-4 transition-colors duration-200 hover:bg-slate-50 md:grid-cols-[1.6fr_1fr_1.4fr_0.8fr_0.9fr_24px] md:items-center md:gap-4"
                 >
                   <div>
                     <p className="font-medium">{t.name}</p>
                     <p className="text-xs text-fg-subtle">{t.submittedAt ? `Submitted ${formatPkt(t.submittedAt)}` : "Not submitted"}</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]" role="progressbar" aria-valuenow={t.completeness} aria-valuemin={0} aria-valuemax={100} aria-label="Completeness">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuenow={t.completeness} aria-valuemin={0} aria-valuemax={100} aria-label="Completeness">
                       <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent" style={{ width: `${t.completeness}%` }} />
                     </div>
                     <span className="tabular w-10 font-mono text-xs text-fg-muted">{t.completeness}%</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5 text-xs">
-                    <Pill n={t.counts.pass} label="pass" cls="text-success bg-success/10" />
-                    <Pill n={t.counts.fail} label="fail" cls="text-danger bg-danger/10" />
-                    <Pill n={t.counts.warn} label="warn" cls="text-warning bg-warning/10" />
-                    <Pill n={t.counts.human_check} label="human" cls="text-info bg-info/10" />
+                    <Pill n={t.counts.pass} label="pass" cls="text-success-ink bg-success/10" />
+                    <Pill n={t.counts.fail} label="fail" cls="text-danger-ink bg-danger/10" />
+                    <Pill n={t.counts.warn} label="warn" cls="text-warning-ink bg-warning/10" />
+                    <Pill n={t.counts.human_check} label="human" cls="text-info-ink bg-info/10" />
                   </div>
                   <div className="text-sm">
-                    {t.openFlags > 0 ? <span className="text-warning">{t.openFlags} open</span> : t.confirmedFlags > 0 ? <span className="text-danger">{t.confirmedFlags} confirmed</span> : <span className="text-fg-subtle">None</span>}
+                    {t.openFlags > 0 ? <span className="text-warning-ink">{t.openFlags} open</span> : t.confirmedFlags > 0 ? <span className="text-danger-ink">{t.confirmedFlags} confirmed</span> : <span className="text-fg-subtle">None</span>}
                   </div>
                   <div className="text-sm">
-                    {t.scoredByMe ? <span className="text-success">Scored</span> : <span className="text-fg-muted">To score</span>}
+                    {t.scoredByMe ? <span className="text-success-ink">Scored</span> : <span className="text-fg-muted">To score</span>}
                     <span className="block text-xs text-fg-subtle">{t.scoreCount} judge{t.scoreCount === 1 ? "" : "s"}</span>
                   </div>
                   <ChevronRight className="hidden size-4 text-fg-subtle md:block" aria-hidden />

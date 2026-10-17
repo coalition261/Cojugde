@@ -37,7 +37,7 @@ const reveal = {
 function SectionHeading({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) {
   return (
     <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} className="mx-auto mb-12 max-w-2xl text-center">
-      <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-accent">{eyebrow}</p>
+      <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-accent-ink">{eyebrow}</p>
       <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
       <p className="mt-4 text-lg text-fg-muted">{sub}</p>
     </motion.div>
@@ -92,10 +92,10 @@ const FEED = [
 ] as const;
 
 const TONE = {
-  fail: "text-danger bg-danger/12 ring-danger/25",
-  flag: "text-warning bg-warning/12 ring-warning/25",
-  warn: "text-warning bg-warning/12 ring-warning/25",
-  human_check: "text-info bg-info/12 ring-info/25",
+  fail: "text-danger-ink bg-danger/12 ring-danger/25",
+  flag: "text-warning-ink bg-warning/12 ring-warning/25",
+  warn: "text-warning-ink bg-warning/12 ring-warning/25",
+  human_check: "text-info-ink bg-info/12 ring-info/25",
 } as const;
 const TONE_LABEL = { fail: "Fail", flag: "Flag", warn: "Warning", human_check: "Human check" } as const;
 export function ChecksShowcase() {
@@ -117,7 +117,7 @@ export function ChecksShowcase() {
     <section id="checks" className="relative scroll-mt-24 py-24">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
         <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }}>
-          <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-accent">Verification engine</p>
+          <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-accent-ink">Verification engine</p>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Every check ends in a clear result — never a silent failure</h2>
           <p className="mt-4 text-lg text-fg-muted">
             Each check returns <em className="not-italic text-fg">pass</em>, <em className="not-italic text-fg">fail</em>,{" "}
@@ -144,7 +144,7 @@ export function ChecksShowcase() {
         <div ref={ref} className="glass-strong relative rounded-2xl p-2">
           <div className="flex items-center justify-between border-b border-glass-border px-4 py-3">
             <div className="flex items-center gap-2 text-sm">
-              <FileSearch className="size-4 text-accent" aria-hidden />
+              <FileSearch className="size-4 text-accent-ink" aria-hidden />
               <span className="font-medium">What every pre-flight checks</span>
             </div>
             <span className="tabular flex items-center gap-1.5 font-mono text-xs text-fg-muted">
@@ -170,7 +170,7 @@ export function ChecksShowcase() {
                     {TONE_LABEL[f.outcome]}
                   </motion.span>
                 ) : (
-                  <span className="h-6 w-16 animate-shimmer rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent)] bg-[length:200%_100%]" aria-hidden />
+                  <span className="h-6 w-16 animate-shimmer rounded-full bg-[linear-gradient(90deg,transparent,rgba(23,37,84,0.08),transparent)] bg-[length:200%_100%]" aria-hidden />
                 )}
               </motion.li>
             ))}
@@ -199,7 +199,7 @@ export function HumanInTheLoop() {
         <div className="glass overflow-hidden rounded-2xl">
           <div className="hidden grid-cols-[1fr_1.3fr_1.3fr] gap-4 border-b border-glass-border px-6 py-4 text-xs font-medium uppercase tracking-wider text-fg-subtle md:grid">
             <span>Decision</span>
-            <span className="flex items-center gap-2"><Bot className="size-4 text-accent" aria-hidden /> AI does</span>
+            <span className="flex items-center gap-2"><Bot className="size-4 text-accent-ink" aria-hidden /> AI does</span>
             <span className="flex items-center gap-2"><UserCheck className="size-4 text-primary-soft" aria-hidden /> Human does</span>
           </div>
           <ul className="divide-y divide-glass-border">
@@ -211,10 +211,10 @@ export function HumanInTheLoop() {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-40px" }}
-                className="grid gap-2 px-6 py-5 transition-colors duration-200 hover:bg-white/[0.02] md:grid-cols-[1fr_1.3fr_1.3fr] md:gap-4"
+                className="grid gap-2 px-6 py-5 transition-colors duration-200 hover:bg-slate-50 md:grid-cols-[1fr_1.3fr_1.3fr] md:gap-4"
               >
                 <span className="font-medium">{d.decision}</span>
-                <span className="text-sm text-fg-muted"><span className="font-medium text-accent md:hidden">AI: </span>{d.ai}</span>
+                <span className="text-sm text-fg-muted"><span className="font-medium text-accent-ink md:hidden">AI: </span>{d.ai}</span>
                 <span className="text-sm text-fg"><span className="font-medium text-primary-soft md:hidden">Human: </span>{d.human}</span>
               </motion.li>
             ))}
@@ -295,7 +295,7 @@ export function Integrations() {
           {items.map((it, i) => (
             <motion.div key={it.name} custom={i} variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <TiltCard className="h-full p-6">
-                <it.icon className="mb-4 size-6 text-accent" aria-hidden />
+                <it.icon className="mb-4 size-6 text-accent-ink" aria-hidden />
                 <h3 className="font-semibold">{it.name}</h3>
                 <p className="mt-2 text-sm text-fg-muted">{it.body}</p>
               </TiltCard>

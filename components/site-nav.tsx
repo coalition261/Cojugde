@@ -34,17 +34,17 @@ export function SiteNav() {
         )}
       >
         <Logo />
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-0.5 md:flex lg:gap-1">
           {LINKS.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className="rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors duration-200 hover:text-fg">
+              <Link href={l.href} className="whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium text-fg transition-colors duration-200 hover:text-primary-strong lg:px-3">
                 {l.label}
               </Link>
             </li>
           ))}
         </ul>
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/login" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+          <Link href="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-fg hover:text-primary-strong")}>
             Judge sign in
           </Link>
           <Link href="/submit" className={buttonVariants({ size: "sm" })}>

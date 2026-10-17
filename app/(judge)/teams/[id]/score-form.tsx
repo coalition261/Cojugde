@@ -97,7 +97,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
                     value={values[c.key] ?? 0}
                     onChange={(e) => setValues((v) => ({ ...v, [c.key]: Math.min(c.weight, Math.max(0, Number(e.target.value) || 0)) }))}
                     aria-label={`${c.label} score`}
-                    className="tabular h-9 w-16 rounded-lg border border-glass-border bg-white/[0.04] px-2 text-right font-mono text-sm focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="tabular h-9 w-16 rounded-lg border border-glass-border bg-slate-50 px-2 text-right font-mono text-sm focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
                   />
                   <span className="tabular w-8 font-mono text-xs text-fg-subtle">/{c.weight}</span>
                 </span>
@@ -122,7 +122,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
         </div>
 
         {error && (
-          <p role="alert" className="mt-4 flex items-center gap-2 text-sm text-danger">
+          <p role="alert" className="mt-4 flex items-center gap-2 text-sm text-danger-ink">
             <CircleAlert className="size-4" aria-hidden /> {error}
           </p>
         )}
@@ -148,7 +148,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
             className="glass rounded-2xl p-6"
           >
             <h2 id="reveal-h" className="mb-4 flex items-center gap-2 font-semibold">
-              <Sparkles className="size-4 text-accent" aria-hidden /> AI estimate revealed
+              <Sparkles className="size-4 text-accent-ink" aria-hidden /> AI estimate revealed
             </h2>
             {!estimate || !gap ? (
               <p className="text-sm text-fg-muted">
@@ -167,7 +167,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
                     return (
                       <li key={c.key}>
                         <div className="mb-1 flex justify-between text-xs">
-                          <span className={cn(c.big ? "font-medium text-warning" : "text-fg-muted")}>
+                          <span className={cn(c.big ? "font-medium text-warning-ink" : "text-fg-muted")}>
                             {CRITERIA.find((x) => x.key === c.key)!.label}
                             {c.big && " · big gap"}
                           </span>
@@ -175,7 +175,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
                             you {c.human} · AI {c.ai}
                           </span>
                         </div>
-                        <div className="relative h-2 rounded-full bg-white/[0.06]">
+                        <div className="relative h-2 rounded-full bg-slate-100">
                           <div className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${(c.human / w) * 100}%` }} />
                           <div className="absolute top-1/2 h-3.5 w-0.5 -translate-y-1/2 rounded bg-accent" style={{ left: `${(c.ai / w) * 100}%` }} aria-hidden />
                         </div>
@@ -187,7 +187,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
 
                 {gap.secondLook && (
                   <div className="mt-6 rounded-xl border border-warning/30 bg-warning/[0.07] p-4">
-                    <p className="flex items-center gap-2 text-sm font-medium text-warning">
+                    <p className="flex items-center gap-2 text-sm font-medium text-warning-ink">
                       <CircleAlert className="size-4" aria-hidden /> Second look: explain the gap in one line
                     </p>
                     <p className="mt-1 text-xs text-fg-muted">Keep or change your score. Your reason calibrates the AI for later teams.</p>
@@ -202,7 +202,7 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
                       className="mt-3 min-h-20"
                     />
                     <div className="mt-3 flex items-center justify-between">
-                      <span className="text-xs text-success" role="status">{reasonSaved ? "Reason saved" : ""}</span>
+                      <span className="text-xs text-success-ink" role="status">{reasonSaved ? "Reason saved" : ""}</span>
                       <Button size="sm" onClick={saveReason} disabled={busy !== null || reason.trim().length < 5}>
                         {busy === "reason" && <LoaderCircle className="animate-spin" aria-hidden />} Save reason
                       </Button>
@@ -220,8 +220,8 @@ export function ScoreForm({ submissionId, initial, initialEstimate, hasEvidence 
 
 function Figure({ label, value, icon: Icon, highlight }: { label: string; value: number; icon?: typeof Bot; highlight?: boolean }) {
   return (
-    <div className={cn("rounded-xl bg-white/[0.03] p-3", highlight && "ring-1 ring-warning/40")}>
-      <p className={cn("tabular font-mono text-xl font-semibold", highlight && "text-warning")}>{Math.round(value * 10) / 10}</p>
+    <div className={cn("rounded-xl bg-slate-50 p-3", highlight && "ring-1 ring-warning/40")}>
+      <p className={cn("tabular font-mono text-xl font-semibold", highlight && "text-warning-ink")}>{Math.round(value * 10) / 10}</p>
       <p className="flex items-center justify-center gap-1 text-xs text-fg-subtle">
         {Icon && <Icon className="size-3" aria-hidden />} {label}
       </p>

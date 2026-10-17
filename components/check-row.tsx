@@ -39,8 +39,8 @@ export function CheckRow({ kind, status, evidence, fixTip, children }: { kind: s
       </div>
       <EvidenceList evidence={evidence} />
       {fixTip && status !== "pass" && (
-        <p className="mt-3 flex gap-2 rounded-lg bg-white/[0.03] px-3 py-2 text-sm text-fg">
-          <Lightbulb className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden />
+        <p className="mt-3 flex gap-2 rounded-lg bg-slate-50 px-3 py-2 text-sm text-fg">
+          <Lightbulb className="mt-0.5 size-4 shrink-0 text-warning-ink" aria-hidden />
           <span>{fixTip}</span>
         </p>
       )}

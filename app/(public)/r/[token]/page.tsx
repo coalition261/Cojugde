@@ -22,7 +22,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
   return (
     <>
       <header className="mb-8">
-        <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-accent">Pre-flight report</p>
+        <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-accent-ink">Pre-flight report</p>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{report.team}</h1>
         <p className="mt-2 text-fg-muted">
           Submitted {formatPkt(report.submittedAt)} PKT · this is a private link — don&apos;t share it publicly.
@@ -31,10 +31,10 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          ["pass", "Passed", "text-success"],
-          ["fail", "Failed", "text-danger"],
-          ["warn", "Warnings", "text-warning"],
-          ["human_check", "Human checks", "text-info"],
+          ["pass", "Passed", "text-success-ink"],
+          ["fail", "Failed", "text-danger-ink"],
+          ["warn", "Warnings", "text-warning-ink"],
+          ["human_check", "Human checks", "text-info-ink"],
         ].map(([k, label, cls]) => (
           <Card key={k} className="p-4">
             <p className={`tabular font-mono text-2xl font-semibold ${cls}`}>{counts[k!] ?? 0}</p>
@@ -45,7 +45,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
       <div
         role="status"
-        className={`mb-6 rounded-2xl border p-4 text-sm ${failing ? "border-warning/30 bg-warning/10 text-warning" : "border-success/30 bg-success/10 text-success"}`}
+        className={`mb-6 rounded-2xl border p-4 text-sm ${failing ? "border-warning/30 bg-warning/10 text-warning-ink" : "border-success/30 bg-success/10 text-success-ink"}`}
       >
         {failing
           ? `${counts.fail ?? 0} failing and ${counts.warn ?? 0} warning check(s). Fix them and resubmit — you've also been emailed the details.`

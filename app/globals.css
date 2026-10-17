@@ -1,31 +1,39 @@
 @import "tailwindcss";
 
-/* CoJudge design tokens — professional dark navy, steel-blue primary, soft teal accent, glass surfaces. */
+/* CoJudge design tokens — White + Midnight Navy + Gold. */
 :root {
-  --bg: #080c16;
-  --bg-elevated: #0e1424;
-  --fg: #e6eaf2;
-  --fg-muted: #94a3b8;
-  --fg-subtle: #748399;
-  --primary: #2f5fc4;
-  --primary-strong: #284fa6;
+  --bg: #ffffff;
+  --bg-elevated: #fafaf8;
+  --surface-tint: #f3f6fc;
+  --fg: #172554; /* headings + primary text (Midnight Navy) */
+  --fg-muted: #475569; /* body text */
+  --fg-subtle: #64748b; /* muted text */
+  --primary: #172554; /* Midnight Navy */
+  --primary-strong: #1e40af; /* Royal Navy (hover) */
   --primary-fg: #ffffff;
-  --primary-soft: #7fa2e3;
-  --accent: #4fb3aa;
-  --success: #45b383;
-  --warning: #d9a441;
-  --danger: #e07070;
-  --info: #8aa4cf;
-  --glass: rgba(255, 255, 255, 0.045);
-  --glass-strong: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.09);
-  --ring: #6e95e0;
-  color-scheme: dark;
+  --primary-soft: #1e40af; /* navy text/icons */
+  --accent: #c49a45; /* Gold */
+  --accent-soft: #e8d5a6;
+  --accent-ink: #8a6a2a; /* gold readable as text on white */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #1e40af;
+  --success-ink: #15803d;
+  --warning-ink: #b45309;
+  --danger-ink: #b91c1c;
+  --info-ink: #1e40af;
+  --glass: #f1f5f9; /* hover tint */
+  --glass-strong: #e9eef6;
+  --glass-border: #e2e8f0;
+  --ring: #1e40af;
+  color-scheme: light;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-elevated: var(--bg-elevated);
+  --color-surface-tint: var(--surface-tint);
   --color-fg: var(--fg);
   --color-fg-muted: var(--fg-muted);
   --color-fg-subtle: var(--fg-subtle);
@@ -34,10 +42,16 @@
   --color-primary-fg: var(--primary-fg);
   --color-primary-soft: var(--primary-soft);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
   --color-info: var(--info);
+  --color-success-ink: var(--success-ink);
+  --color-warning-ink: var(--warning-ink);
+  --color-danger-ink: var(--danger-ink);
+  --color-info-ink: var(--info-ink);
   --color-glass: var(--glass);
   --color-glass-strong: var(--glass-strong);
   --color-glass-border: var(--glass-border);
@@ -48,7 +62,6 @@
   --animate-float: float 8s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
 }
-
 @keyframes shimmer {
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }
@@ -74,38 +87,36 @@ body {
   line-height: 1.6;
 }
 
-/* Glassmorphism surface */
+/* Card surface: white, hairline border, restrained shadow. */
 @utility glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025));
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background: #ffffff;
   border: 1px solid var(--glass-border);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 20px 40px -24px rgba(0, 0, 0, 0.7);
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 8px 24px -16px rgba(23, 37, 84, 0.12);
 }
+/* Floating surface (navbar, status chips, panels): near-white with a light blur. */
 @utility glass-strong {
-  background: linear-gradient(180deg, rgba(18, 26, 44, 0.82), rgba(12, 18, 32, 0.72));
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
   border: 1px solid var(--glass-border);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 24px 60px -28px rgba(0, 0, 0, 0.8);
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 12px 32px -18px rgba(23, 37, 84, 0.18);
 }
 @utility text-gradient {
-  background: linear-gradient(100deg, #c9d6ea 0%, #ffffff 45%, #9fd3cc 100%);
+  background: linear-gradient(100deg, #172554 0%, #1e40af 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 @utility bg-grid {
   background-image:
-    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(23, 37, 84, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 37, 84, 0.045) 1px, transparent 1px);
   background-size: 56px 56px;
 }
-
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
@@ -113,7 +124,7 @@ body {
 }
 
 ::selection {
-  background: rgba(47, 95, 196, 0.35);
+  background: rgba(30, 64, 175, 0.16);
 }
 
 .tabular {

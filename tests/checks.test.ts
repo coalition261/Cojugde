@@ -141,3 +141,18 @@ test("database connection errors are recognised for a single retry", async () =>
   assert.equal(isConnectionError({ message: "x", code: "ECONNRESET" }), true);
   assert.equal(isConnectionError(new Error('duplicate key value violates unique constraint "teams_name_unique"')), false);
 });
+
+test("confirmation email lists open items and the private report link", async () => {
+  process.env.APP_URL = "https://example.test";
+  const { submissionReceivedEmail } = await import("../lib/alerts");
+  const mail = submissionReceivedEmail("Team X", "x@example.com", "tok123", [
+    { kind: "deployment_live", status: "pass", evidence: {} },
+    { kind: "video", status: "warn", evidence: { durationSeconds: 242 }, fixTip: "The video is 4:02; the rule is 2–3 minutes." },
+    { kind: "linkedin", status: "human_check", evidence: {} },
+  ]);
+  assert.equal(mail.to, "x@example.com");
+  assert.match(mail.subject, /submission received \(1 item to review\)/);
+  assert.match(mail.text, /Passed: 1 · Failed: 0 · Warnings: 1 · Human checks: 1/);
+  assert.match(mail.text, /Demo video — The video is 4:02/);
+  assert.match(mail.text, /https:\/\/example\.test\/r\/tok123/);
+});

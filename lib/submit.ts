@@ -5,7 +5,7 @@ import { z } from "zod";
 import { db, schema } from "./db";
 import { runChecks } from "./checks";
 import type { CheckKind, CheckResult } from "./checks/types";
-import { openFlags, sendCheckFailedAlert } from "./alerts";
+import { openFlags, sendCheckFailedAlert, sendSubmissionReceived } from "./alerts";
 import { audit } from "./audit";
 
 export const SubmissionSchema = z.object({
@@ -116,5 +116,17 @@ export async function processSubmission(input: SubmissionPayload) {
     previous,
   });
 
-  return { token: sub.reportToken, cached: false, durationMs: outcome.durationMs, alert };
+  // One email per fresh run: the failure alert if something newly broke, otherwise a confirmation.
+  const confirmation =
+    alert === "sent"
+      ? "skipped"
+      : await sendSubmissionReceived({
+          teamId: team.id,
+          teamName: team.name,
+          email: team.contactEmail,
+          token: sub.reportToken,
+          results: outcome.results,
+        });
+
+  return { token: sub.reportToken, cached: false, durationMs: outcome.durationMs, alert, confirmation };
 }

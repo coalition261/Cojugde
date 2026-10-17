@@ -4,6 +4,8 @@ import { requireInternal } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { env } from "@/lib/env";
 import { CHECK_LABELS, type CheckKind } from "@/lib/checks/types";
+import { deliver } from "@/lib/alerts";
+import { smtpConfigured } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,12 +36,14 @@ export async function POST(req: Request) {
       .insert(schema.notifications)
       .values({ teamId: team.id, type: "deadline_reminder", status: "queued", issueKey: "deadline", subject: `1 hour left: ${n} issue${n === 1 ? "" : "s"} still open` })
       .returning();
-    emails.push({
-      notificationId: row?.id,
+    const mail = {
       to: team.contactEmail,
       subject: `1 hour left: ${n} issue${n === 1 ? "" : "s"} still open`,
       text: `Hi ${team.name},\n\nThe deadline is in 1 hour and your submission still has ${n} open issue${n === 1 ? "" : "s"}:\n\n${issues.map((i, k) => `${k + 1}. ${i}`).join("\n")}\n\nReport: ${env.appUrl}/r/${token}\n\n— CoJudge`,
-    });
+    };
+    // Sent directly when SMTP is configured; otherwise returned for n8n WF5 to send.
+    if (row && smtpConfigured() && (await deliver(row.id, mail, null)) === "sent") continue;
+    emails.push({ notificationId: row?.id, ...mail });
   }
   return NextResponse.json({ emails });
 }

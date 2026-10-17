@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, LogOut, Trophy } from "lucide-react";
+import { LayoutDashboard, LogOut, Mail, Trophy } from "lucide-react";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
-  { href: "/dashboard", label: "Teams", icon: LayoutDashboard },
-  { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
+  { href: "/dashboard", label: "Teams", icon: LayoutDashboard, organizerOnly: false },
+  { href: "/leaderboard", label: "Leaderboard", icon: Trophy, organizerOnly: false },
+  { href: "/emails", label: "Emails", icon: Mail, organizerOnly: true },
 ];
 
 export function JudgeNav({ name, role }: { name: string; role: "judge" | "organizer" }) {
@@ -18,7 +19,7 @@ export function JudgeNav({ name, role }: { name: string; role: "judge" | "organi
       <nav aria-label="Judge" className="glass-strong mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 rounded-2xl px-4 sm:px-5">
         <Logo href="/dashboard" />
         <ul className="flex items-center gap-1">
-          {LINKS.map((l) => {
+          {LINKS.filter((l) => !l.organizerOnly || role === "organizer").map((l) => {
             const active = path === l.href || (l.href === "/dashboard" && path.startsWith("/teams"));
             return (
               <li key={l.href}>

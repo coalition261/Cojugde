@@ -9,3 +9,4 @@ next-env.d.ts
 npm-debug.log*
 .DS_Store
 .pgdata/
+.env.deploy

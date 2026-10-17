@@ -15,7 +15,7 @@
       "typeVersion": 2,
       "position": [0, 0],
       "webhookId": "cojudge-flag-opened",
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Webhook Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "mppCeiSf4d3YCnBD", "name": "CoJudge Webhook Key" } }
     },
     {
       "parameters": {
@@ -57,7 +57,7 @@
       "retryOnFail": true,
       "maxTries": 2,
       "onError": "continueErrorOutput",
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     }
   ],
   "connections": {

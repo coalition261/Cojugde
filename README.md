@@ -17,6 +17,7 @@ CoJudge verifies each submission in seconds, emails teams when something breaks,
 | Email alerts + uptime watch (cooldown, daily cap, state-change dedupe) | F4 | ✅ Built — sent **directly via Gmail SMTP** (`lib/mailer.ts`), n8n WF1/WF2/WF5 as fallback |
 | Submission confirmation email with private report link (every fresh pre-flight run) | extra | ✅ Built, verified with a real Gmail delivery |
 | Organizer **Sent emails** page (`/emails`): sent / failed / held back + reason | extra | ✅ Built |
+| **Built-in scheduler** (`instrumentation.ts` → `lib/scheduler.ts`): uptime sweep every 10 min + deadline reminder at 11:45 AM PKT, no n8n needed | F4 | ✅ Built; replaces n8n WF2/WF5 timers (keep those workflows unpublished to avoid double runs) |
 | AI evidence agent (Groq, Zod, retry + fallback, citation filter, clamp) | F5 | ✅ Built |
 | Blind-first scoring (server-enforced), gap rule, second look | F6 | ✅ Built |
 | Flags with Discord approval + dashboard Confirm/Dismiss, audit log | F7 | ✅ Built (n8n WF3) |
@@ -40,7 +41,7 @@ CoJudge verifies each submission in seconds, emails teams when something breaks,
 | App | https://alternate-harmonic-cascade-5871-github-app.alternatefutures.ai | Alternate Clouds project **cojudge**, service **cojudge** (`cmvbf2wop0f1je41rzwkbyykr`), built from `coalition261/Cojugde@main`, port 3000. The URL keeps the service's original slug; renaming the service doesn't change it. |
 | Database | **Supabase** Postgres 17, project `dirmdqhjvqndoooppfeu` (Sydney), via the IPv4 **session pooler** `aws-0-ap-southeast-2.pooler.supabase.com:5432` with SSL (`DATABASE_SSL=true`, `DATABASE_POOL_MAX=5`) | Moved here from the Alternate Clouds Postgres template, which the app could only reach through a flaky forwarded port (connection timeouts on submit). The old `postgresql-ls57` service is closed. Direct Supabase connections are IPv6-only, so use the pooler. |
 | n8n | https://ayaan261.app.n8n.cloud (n8n Cloud trial) | WF1–WF5 imported and pointed at the live app URL. Not active until credentials are attached. |
-| Variables | `.env.production.local` (git-ignored, on the build laptop only) | Every value set on the app service; set with `acc services env set …`. |
+| Variables | `.env.deploy` (git-ignored, on the build laptop only; deliberately **not** named `.env.production.local`, which `next start` would auto-load and point a local run at the live DB) | Every value set on the app service; set with `acc services env set …`. |
 
 Redeploy after a push or a variable change (the CLI is logged in as coalition261):
 
@@ -92,6 +93,7 @@ The platform's deploy occasionally fails with `Akash tx rejected (code 32)` or a
 | `FREEZE_AT` | ✅ | `2026-10-17T07:45:00Z` (12:45 PM PKT) |
 | `EVENT_ENDS_AT` | ✅ | `2026-10-17T13:00:00Z` (uptime watch stops) |
 | `DEPLOY_HOST_PATTERN` | – | defaults to `^[a-z0-9-]+-app\.alternatefutures\.ai$` |
+| `SCHEDULER_ENABLED` / `UPTIME_SWEEP_MINUTES` / `DEADLINE_REMINDER_AT` | – | Built-in scheduler: on by default in production (`false` turns it off), sweep interval (default `10`), reminder time in UTC (default `2026-10-17T06:45:00Z` = 11:45 AM PKT). |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` | ✅ for email | Gmail: `smtp.gmail.com`, `465`, the sending address, and a Gmail **app password** (needs 2-Step Verification). Optional `SMTP_FROM`. Without them, emails fall back to n8n. |
 
 ### n8n service (`cojudge-flow`)

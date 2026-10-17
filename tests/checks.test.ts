@@ -156,3 +156,12 @@ test("confirmation email lists open items and the private report link", async ()
   assert.match(mail.text, /Demo video — The video is 4:02/);
   assert.match(mail.text, /https:\/\/example\.test\/r\/tok123/);
 });
+
+test("deadline reminder fires only inside its one-hour window", async () => {
+  const { reminderDue } = await import("../lib/scheduler");
+  const at = new Date("2026-10-17T06:45:00Z");
+  assert.equal(reminderDue(new Date("2026-10-17T06:44:59Z"), at), false);
+  assert.equal(reminderDue(new Date("2026-10-17T06:45:00Z"), at), true);
+  assert.equal(reminderDue(new Date("2026-10-17T07:30:00Z"), at), true);
+  assert.equal(reminderDue(new Date("2026-10-17T07:45:00Z"), at), false);
+});

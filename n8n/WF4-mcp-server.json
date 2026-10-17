@@ -26,7 +26,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
       "typeVersion": 1.1,
       "position": [0, 220],
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     },
     {
       "parameters": {
@@ -41,7 +41,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
       "typeVersion": 1.1,
       "position": [260, 220],
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     },
     {
       "parameters": {
@@ -56,7 +56,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
       "typeVersion": 1.1,
       "position": [520, 220],
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     },
     {
       "parameters": {
@@ -78,7 +78,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
       "typeVersion": 1.1,
       "position": [780, 220],
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     }
   ],
   "connections": {

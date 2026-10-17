@@ -25,7 +25,7 @@
       "retryOnFail": true,
       "maxTries": 2,
       "onError": "continueErrorOutput",
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     },
     {
       "parameters": { "fieldToSplitOut": "emails", "options": {} },
@@ -37,7 +37,7 @@
     },
     {
       "parameters": {
-        "fromEmail": "CoJudge <your-gmail@gmail.com>",
+        "fromEmail": "CoJudge <noreply.getpoint@gmail.com>",
         "toEmail": "={{ $json.to }}",
         "subject": "={{ $json.subject }}",
         "emailFormat": "text",
@@ -52,7 +52,7 @@
       "retryOnFail": true,
       "maxTries": 2,
       "onError": "continueErrorOutput",
-      "credentials": { "smtp": { "id": "", "name": "Gmail SMTP" } }
+      "credentials": { "smtp": { "id": "nmKPUMIaJJ7Ur8Zx", "name": "Gmail SMTP" } }
     },
     {
       "parameters": {
@@ -73,7 +73,7 @@
       "retryOnFail": true,
       "maxTries": 2,
       "onError": "continueErrorOutput",
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "CoJudge Internal Key" } }
+      "credentials": { "httpHeaderAuth": { "id": "rZFpG2m0mKZDSFXl", "name": "CoJudge Internal Key" } }
     }
   ],
   "connections": {

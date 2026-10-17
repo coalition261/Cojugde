@@ -14,7 +14,9 @@ CoJudge verifies each submission in seconds, emails teams when something breaks,
 | Submission intake (form, upsert by team name, `submitted_at`) | F1 | ✅ Built (PDF upload is P1, not built) |
 | Verification engine (URL safety, deployment, Alternate Clouds, repo, code freeze, secrets, video, workflow JSON, LinkedIn, injection) | F2, F12 | ✅ Built, never throws, unit-tested |
 | Pre-flight report `/r/[token]` | F3 | ✅ Built |
-| Email alerts + uptime watch (cooldown, daily cap, state-change dedupe) | F4 | ✅ Built (Next.js side + n8n WF1/WF2) |
+| Email alerts + uptime watch (cooldown, daily cap, state-change dedupe) | F4 | ✅ Built — sent **directly via Gmail SMTP** (`lib/mailer.ts`), n8n WF1/WF2/WF5 as fallback |
+| Submission confirmation email with private report link (every fresh pre-flight run) | extra | ✅ Built, verified with a real Gmail delivery |
+| Organizer **Sent emails** page (`/emails`): sent / failed / held back + reason | extra | ✅ Built |
 | AI evidence agent (Groq, Zod, retry + fallback, citation filter, clamp) | F5 | ✅ Built |
 | Blind-first scoring (server-enforced), gap rule, second look | F6 | ✅ Built |
 | Flags with Discord approval + dashboard Confirm/Dismiss, audit log | F7 | ✅ Built (n8n WF3) |
@@ -90,6 +92,7 @@ The platform's deploy occasionally fails with `Akash tx rejected (code 32)` or a
 | `FREEZE_AT` | ✅ | `2026-10-17T07:45:00Z` (12:45 PM PKT) |
 | `EVENT_ENDS_AT` | ✅ | `2026-10-17T13:00:00Z` (uptime watch stops) |
 | `DEPLOY_HOST_PATTERN` | – | defaults to `^[a-z0-9-]+-app\.alternatefutures\.ai$` |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` | ✅ for email | Gmail: `smtp.gmail.com`, `465`, the sending address, and a Gmail **app password** (needs 2-Step Verification). Optional `SMTP_FROM`. Without them, emails fall back to n8n. |
 
 ### n8n service (`cojudge-flow`)
 
